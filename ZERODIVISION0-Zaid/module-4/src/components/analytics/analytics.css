@@ -1,0 +1,62 @@
+.civic-health {
+  margin-bottom: 20px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.metric-box {
+  background: rgba(0,0,0,0.2);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.metric-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.metric-val {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-neon), var(--accent-green));
+  transition: width 0.5s ease;
+}
+
+.issue-charts {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.clear-filter-btn {
+  background: rgba(255,255,255,0.1);
+  color: var(--text-primary);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  transition: background 0.2s;
+}
+
+.clear-filter-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
