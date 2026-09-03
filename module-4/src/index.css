@@ -1,0 +1,296 @@
+:root {
+  --bg-primary: #070b14;
+  --bg-panel: #0d1527;
+  --bg-card: #131f38;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --accent-blue: #38bdf8;
+  --accent-crimson: #ef4444;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
+
+body.incident-mode {
+  --bg-primary: #120305;
+  --bg-panel: #1e080b;
+  --bg-card: #2c0c11;
+  --border-subtle: rgba(239, 68, 68, 0.3);
+  --accent-blue: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+}
+
+/* --- 1. Custom Dark Scrollbars (Eliminates Bright White Gutter) --- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary, #070b14);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox scrollbar support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) var(--bg-primary, #070b14);
+}
+
+/* Master 3-Column Layout */
+.dashboard-main {
+  display: grid;
+  grid-template-columns: 1fr 340px 320px;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* --- Map Viewport & Overlays --- */
+.map-pane {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.map-pane .leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  background: #090e1a !important;
+}
+
+/* Dark Mode Tile Inversion: Gives standard OSM tiles a midnight aesthetic */
+.map-pane .leaflet-tile-pane {
+  filter: brightness(0.65) invert(1) contrast(3) hue-rotate(200deg) saturate(0.25);
+}
+
+/* --- 2. Clean Dark-Mode Leaflet Attribution & Controls --- */
+.leaflet-control-attribution {
+  background: rgba(11, 15, 25, 0.8) !important;
+  color: #64748b !important;
+  font-size: 10px !important;
+  backdrop-filter: blur(6px);
+  border-radius: 4px 0 0 0 !important;
+  padding: 2px 6px !important;
+}
+
+.leaflet-control-attribution a {
+  color: #94a3b8 !important;
+  text-decoration: none;
+}
+
+.leaflet-control-attribution a:hover {
+  text-decoration: underline;
+}
+
+/* Zoom buttons restyle */
+.leaflet-bar {
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1)) !important;
+  border-radius: 6px !important;
+  overflow: hidden;
+}
+
+.leaflet-bar a {
+  background-color: rgba(13, 21, 39, 0.9) !important;
+  color: var(--text-main, #f8fafc) !important;
+  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1)) !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: rgba(56, 189, 248, 0.25) !important;
+  color: #38bdf8 !important;
+}
+
+/* --- 3. Top-Left Map Controls Spacing & Alignment --- */
+.map-controls-overlay {
+  position: absolute;
+  top: 14px;
+  left: 64px; /* Sufficient clearance from Leaflet +/- controls */
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.map-control-btn {
+  background: rgba(13, 21, 39, 0.85);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.map-control-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--accent-blue);
+}
+
+.incident-mode-btn {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #fca5a5;
+}
+
+.incident-mode-btn:hover {
+  background: rgba(239, 68, 68, 0.35);
+}
+
+.incident-stats-overlay {
+  position: absolute;
+  top: 56px;
+  left: 64px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(30, 8, 11, 0.92);
+  border: 1px solid var(--border-subtle, rgba(239, 68, 68, 0.3));
+  padding: 8px 16px;
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.incident-stat-pill {
+  display: flex;
+  flex-direction: column;
+}
+
+.incident-stat-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.incident-stat-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f87171;
+}
+
+/* --- Right Sidebars (Analytics & Alerts) --- */
+.analytics-pane {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1.25rem;
+  background: var(--bg-panel);
+  border-left: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* --- 4. Live Alerts Panel Layout & Dynamic Height --- */
+.sidebar-pane {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-panel, #0d1527);
+  border-left: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  padding: 1.25rem;
+  overflow: hidden;
+}
+
+.alerts-header {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alerts-feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 4px;
+}
+
+.panel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.panel-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Live Alert Cards */
+.alert-card {
+  background: var(--bg-card, #131f38);
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  border-left: 4px solid #38bdf8;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.alert-card.critical {
+  border-left-color: #ef4444;
+}
+
+.alert-card:hover {
+  transform: translateX(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.alert-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.alert-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.alert-timestamp {
+  font-size: 11px;
+  color: var(--text-muted);
+  align-self: flex-start;
+}
