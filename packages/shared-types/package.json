@@ -1,0 +1,13 @@
+{
+  "name": "@civic/shared-types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript domain types and contracts for Smart Civic Issue Reporting & Resolution Platform",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

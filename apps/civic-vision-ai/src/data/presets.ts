@@ -1,0 +1,58 @@
+import { PresetImage } from '../types';
+
+export const PRESET_IMAGES: PresetImage[] = [
+  {
+    id: 'preset-pothole-real',
+    name: 'Authentic Road Pothole',
+    category: 'pothole',
+    tag: 'Real Camera',
+    tagColor: 'emerald',
+    url: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=800&q=80',
+    expectedOutcome: 'Detects severe road pothole cavity; 100% authentic camera capture with CMOS sensor grain.',
+  },
+  {
+    id: 'preset-garbage-real',
+    name: 'Overflowing Waste Dump',
+    category: 'garbage',
+    tag: 'Real Camera',
+    tagColor: 'emerald',
+    url: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=800&q=80',
+    expectedOutcome: 'Detects municipal waste scatter; high visual magnitude; authentic camera capture.',
+  },
+  {
+    id: 'preset-light-real',
+    name: 'Broken Street Light',
+    category: 'street_light',
+    tag: 'Real Camera',
+    tagColor: 'emerald',
+    url: 'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=800&q=80',
+    expectedOutcome: 'Detects municipal lighting hardware fault; authentic hardware photo.',
+  },
+  {
+    id: 'preset-ai-synthetic',
+    name: 'AI-Generated Road Hazard',
+    category: 'pothole',
+    tag: 'AI Synthetic',
+    tagColor: 'rose',
+    url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+    expectedOutcome: 'FLAGGED: Synthetic diffusion artifacts, unnatural smoothing, and FFT spectral anomaly.',
+  },
+  {
+    id: 'preset-noncivic-cat',
+    name: 'Random Pet (Cat / Kitten)',
+    category: 'non_civic_irrelevant',
+    tag: 'Random Non-Civic',
+    tagColor: 'amber',
+    url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80',
+    expectedOutcome: 'REJECTED: Non-civic irrelevant image. Zero hazard detected (fixes the random image bug!).',
+  },
+  {
+    id: 'preset-noncivic-food',
+    name: 'Random Food (Pizza meal)',
+    category: 'non_civic_irrelevant',
+    tag: 'Random Non-Civic',
+    tagColor: 'amber',
+    url: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80',
+    expectedOutcome: 'REJECTED: Domestic food item. Prevents false-positive pothole hallucination.',
+  },
+];

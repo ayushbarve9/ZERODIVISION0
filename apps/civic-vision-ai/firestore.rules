@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net (default-deny catch-all)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == '22barveayush@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidUser(data) {
+      return data.uid == request.auth.uid &&
+             data.email is string &&
+             data.email.size() <= 256 &&
+             data.role in ['citizen', 'inspector', 'admin'];
+    }
+
+    function isValidCivicIssue(data) {
+      return data.title is string &&
+             data.title.size() <= 200 &&
+             data.description is string &&
+             data.description.size() <= 2000 &&
+             data.category is string &&
+             data.category.size() <= 50 &&
+             data.status in ['reported', 'investigating', 'in_progress', 'resolved', 'flagged_ai_fake', 'rejected'] &&
+             data.reportedByUid == request.auth.uid;
+    }
+
+    match /users/{userId} {
+      allow get: if isValidId(userId) && (isOwner(userId) || isAdmin());
+      allow list: if isAdmin();
+      allow create: if isValidId(userId) && isOwner(userId) && isValidUser(incoming());
+      allow update: if isValidId(userId) && isOwner(userId) && isValidUser(incoming()) &&
+                    incoming().uid == existing().uid &&
+                    incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'role', 'email']);
+    }
+
+    match /civic_issues/{issueId} {
+      allow get: if isValidId(issueId) && isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if isValidId(issueId) && isSignedIn() && isValidCivicIssue(incoming());
+      allow update: if isValidId(issueId) && isSignedIn() && (
+        isAdmin() ||
+        (existing().reportedByUid == request.auth.uid &&
+         incoming().reportedByUid == existing().reportedByUid &&
+         incoming().diff(existing()).affectedKeys().hasOnly(['status', 'resolvedImageUrl', 'resolutionConfidence', 'updatedAt']))
+      );
+      allow delete: if isValidId(issueId) && isAdmin();
+    }
+  }
+}

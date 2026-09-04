@@ -1,0 +1,54 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role and authentication details",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email", "description": "User email address" },
+        "displayName": { "type": "string", "description": "User display name" },
+        "role": { "type": "string", "enum": ["citizen", "inspector", "admin"], "description": "User access role" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Account creation timestamp" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "CivicIssue": {
+      "title": "CivicIssue",
+      "description": "Reported civic municipal issue with YOLOv11 and authenticity metadata",
+      "type": "object",
+      "properties": {
+        "issueCode": { "type": "string", "description": "Unique municipal tracking code", "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "maxLength": 200, "description": "Issue title" },
+        "description": { "type": "string", "maxLength": 2000, "description": "Detailed description" },
+        "category": { "type": "string", "maxLength": 50, "description": "Civic category" },
+        "status": { "type": "string", "enum": ["reported", "investigating", "in_progress", "resolved", "flagged_ai_fake", "rejected"], "description": "Current status" },
+        "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"], "description": "Priority severity" },
+        "visualSeverityScore": { "type": "number", "description": "0-100 visual severity score" },
+        "location": { "type": "string", "maxLength": 300, "description": "Location description or street address" },
+        "imageUrl": { "type": "string", "maxLength": 2048, "description": "Photo URL" },
+        "isAuthentic": { "type": "boolean", "description": "Authentic physical photo vs AI synthetic" },
+        "aiConfidence": { "type": "number", "description": "Classification confidence score" },
+        "authenticityLabel": { "type": "string", "enum": ["authentic", "ai_generated", "suspicious", "non_civic"] },
+        "detectedHazardCount": { "type": "number" },
+        "reportedByUid": { "type": "string", "description": "Author user UID" },
+        "reporterEmail": { "type": "string", "description": "Author email" },
+        "resolvedImageUrl": { "type": "string", "maxLength": 2048 },
+        "resolutionConfidence": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["issueCode", "title", "description", "category", "status", "reportedByUid"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents keyed by Firebase Auth UID"
+    },
+    "/civic_issues/{issueId}": {
+      "schema": "CivicIssue",
+      "description": "Municipal issues collection"
+    }
+  }
+}
